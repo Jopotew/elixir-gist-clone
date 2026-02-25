@@ -28,7 +28,8 @@
       })();
     </script>
   </head>
-  <body>
+
+  <body class="min-h-screen flex flex-col bg-emDark-dark">
     <!-- NAVBAR -->
     <header class="flex justify-between items-center px-6 py-3 bg-emDark">
       <div class="flex items-center gap-4"> 
@@ -70,7 +71,7 @@
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="p-4">
+    <main class="flex-1">
       <.flash_group flash={@flash} />
       <%= @inner_content %>
     </main>
@@ -86,7 +87,7 @@
             <a href={~p"/"} class="hover:underline">Terms</a>
             <a href={~p"/"} class="hover:underline">Privacy</a>
             <a href={~p"/"} class="hover:underline">About</a>
-            <a href={~p"/"} class="hover:underline">Github</a>
+            <a href="https://github.com/Jopotew/elixir-gist-clone" target="_blank" class="hover:underline">Github</a>
           </div>
         </div>
       </div>
