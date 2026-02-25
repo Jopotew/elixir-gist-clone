@@ -169,6 +169,15 @@
 }
 
 
+.em-gradient{
+  background-image: linear-gradient(to bottom, #631A61, #551653, #340E33, #010101);
+  height: 225px;
+  
+}
+
+
+
+
 
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);

@@ -8,8 +8,7 @@
       {assigns[:page_title] || "Home"}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
-    </script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}></script>
     <script>
       (() => {
         const setTheme = (theme) => {
@@ -25,12 +24,72 @@
           setTheme(localStorage.getItem("phx:theme") || "system");
         }
         window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "system"));
-        
         window.addEventListener("phx:set-theme", (e) => setTheme(e.target.dataset.phxTheme));
       })();
     </script>
   </head>
   <body>
-    {@inner_content}
+    <!-- NAVBAR -->
+    <header class="flex justify-between items-center px-6 py-3 bg-emDark">
+      <div class="flex items-center gap-4"> 
+        <a href={~p"/"} class="flex items-center gap-2"> 
+          <img src="/images/gist-logo.svg" alt="Logo" class="h-8 w-auto" >
+          <div class="text-white font-brand font-bold text-3xl">Gist</div> 
+        </a>
+
+        <div class="flex items-center ml-4">
+          <input type="text" class="rounded-lg focus:outline-none focus:border-emLavander focus:ring-0 px-3 py-1 bg-emDark-dark placeholder-emDark-light text-white font-brand font-regular text-sm mr-5 border border-white" 
+          placeholder="Search..."
+          />
+          <button class="text-white text-base font-brand font-bold hover:text-emDark-light">
+            All gists
+          </button>
+        </div>
+      </div>
+
+      <div class="relative">
+        <button class="img-down-arrow" type="button" id="user-menu-button" phx-click={GitGistClone.Layouts.App.toggle_dropdown_menu()} aria-haspopup="true" aria-expanded="false">
+          <img src="/images/user-image.jpg" alt="Profile Image" class="round-image-padding w-8 h-8"> 
+        </button>
+
+        <div id="dropdown_menu"
+          phx-click-away={GitGistClone.Layouts.App.toggle_dropdown_menu()}
+          class="dropdown-menu-arrow hidden absolute right-0 mt-2 py-2 w-48 bg-emDark  rounded-lg shadow-xl border border-white"
+        >
+          <%= if @current_scope do %>
+            <.link href={~p"/users/settings"} class="menu-item border-b border-white border-opacity-50" role="menuitem" tabindex="-1">Signed in as <%= @current_scope.user.email%></.link>
+            <.link href={~p"/users/settings"} class="menu-item" role="menuitem" tabindex="-1">Your gists</.link>
+            <.link href={~p"/users/settings"} class="menu-item border-b border-white border-opacity-50" role="menuitem" tabindex="-1">Saved gists</.link>
+            <.link href={~p"/users/log-out"} class="menu-item" role="menuitem" tabindex="-1" method="delete">Sign out</.link>
+          <% else %>
+            <.link href={~p"/users/log-in"} class="menu-item border-b border-white border-opacity-50" role="menuitem" tabindex="-1">Sign in</.link>
+            <.link href={~p"/users/register"} class="menu-item border-b border-white border-opacity-50" role="menuitem" tabindex="-1">Register</.link>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-4">
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="h-[120px] w-full flex justified-center text-white px-16 py-20 font-brand font-regular text-xs">
+      <div class="w-full px-10">
+        <div class="border-t-[1px] border-white w-full"></div>
+        <div class="flex items-center space-x-2 py-6 ">
+          <img src="/images/em-logo.png" alt="Elixir Logo" class="h-10 w-10">
+          <p>© 2026 Jopotew</p>
+          <div class="text-emLavender-dark px-4 space-x-3">
+            <a href={~p"/"} class="hover:underline">Terms</a>
+            <a href={~p"/"} class="hover:underline">Privacy</a>
+            <a href={~p"/"} class="hover:underline">About</a>
+            <a href={~p"/"} class="hover:underline">Github</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
