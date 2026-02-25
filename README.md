@@ -33,7 +33,7 @@ This project allows users to register, log in, and manage gists through a clean 
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/git_gist_clone.git
+git clone https://github.com/jopotew/git_gist_clone.git
 cd git_gist_clone
 ```
 
