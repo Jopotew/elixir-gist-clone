@@ -10,6 +10,9 @@ defmodule GitGistClone.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
+    has_many :gists, GitGistClone.Gists.Gist
+    has_many :saved_gists, GitGistClone.Gists.SavedGist
+  
 
     timestamps(type: :utc_datetime)
   end

@@ -18,7 +18,7 @@ defmodule GitGistClone.Gists.Gist do
   def changeset(gist, attrs, user_scope) do
     gist
     |> cast(attrs, [:user_id, :name, :description, :markup_text])
-    |> validate_required([:user_id, :name, :description, :markup_text])
+    |> validate_required([:user_id, :name])
     |> put_change(:user_id, user_scope.user.id)
   end
 end

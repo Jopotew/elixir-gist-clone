@@ -74,10 +74,10 @@ defmodule GitGistClone.Gists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_gist(user, attrs, scopes \\ %{}) do
+  def create_gist(%Scope{user: user} = scope, attrs \\ %{}) do
     user
     |> Ecto.build_assoc(:gists)
-    |> Gist.changeset(attrs, scopes)
+    |> Gist.changeset(attrs, scope)
     |> Repo.insert()
   end
 

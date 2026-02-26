@@ -19,4 +19,27 @@ defmodule GitGistCloneWeb.UserLive.CreateGistLive do
     {:ok, socket}
   end
 
+
+  def handle_event("validate", %{"gist" => gist_params}, socket) do
+  scope = socket.assigns.current_scope
+
+  changeset =
+    scope
+    |> Gists.change_gist(%Gist{user_id: scope.user.id}, gist_params)
+    |> Map.put(:action, :validate)
+
+  {:noreply, assign(socket, :form, to_form(changeset))}
+end
+
+  def handle_event("create", %{"gist" => gist_params}, socket) do
+    scope = socket.assigns.current_scope
+
+    case Gists.create_gist(scope, gist_params) do
+      {:ok, _gist} ->
+        changeset = Gists.change_gist(scope, %Gist{user_id: scope.user.id})
+        {:noreply, assign(socket, :form, to_form(changeset))}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
 end
