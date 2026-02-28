@@ -26,10 +26,59 @@ import {hooks as colocatedHooks} from "phoenix-colocated/git_gist_clone"
 import topbar from "../vendor/topbar"
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+
+let Hooks = {};
+
+Hooks.UpdateLineNumbers ={
+  
+  mounted() {
+    const lineNumberText = document.querySelector("#line-numbers")
+    this.el.addEventListener("input", () => {
+      this.updateLineNUmbers()
+    })
+    this.el.addEventListener("scroll", () => {
+      if (!lineNumberText) return;
+      lineNumberText.scrollTop = this.el.scrollTop
+    })
+
+    this.el.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        event.preventDefault();
+        const start = this.el.selectionStart;
+        const end = this.el.selectionEnd;
+
+        this.el.value = this.el.value.substring(0, start) + "\t" + this.el.value.substring(end);
+        
+        this.el.selectionStart = this.el.selectionEnd = start + 1;
+
+        this.updateLineNUmbers()
+      }
+    })
+
+    this.handleEvent("clear-textareas", () => {
+      this.el.value = ""
+      lineNumberText.value = "1\n"
+    })
+
+    this.updateLineNUmbers()
+  },
+
+  updateLineNUmbers() {
+    const lineNumberText = document.querySelector("#line-numbers")
+    if (!lineNumberText) return;
+
+    const lines = this.el.value.split("\n"); 
+
+    const numbers = lines.map((_, index) => index +1 ).join("\n") + "\n"
+  
+    lineNumberText.value = numbers
+  }
+};
+
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: {...colocatedHooks, ...Hooks}
 })
 
 // Show progress bar on live navigation and form submits

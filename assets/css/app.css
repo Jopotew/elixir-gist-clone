@@ -176,14 +176,24 @@ form input[type="text"]:focus {
   @apply focus:outline-none focus:border-emLavender focus:ring-0
 }
 
-.textarea {
-  @apply bg-emDark-dark font-brand font-regular text-white text-xs border border-white h-[300px] resize-none;
+.line-numbers {
+  @apply border border-white font-brand font-regular text-xs text-emDark-light bg-emDark-dark h-[300px] w-[54px] text-right overflow-hidden resize-none p-2;
+  border-right: none;
   border-top: none;
 }
 
-.textarea:focus {
-  @apply focus:outline-none focus:border-white focus:ring-0
+.textarea {
+  @apply bg-emDark-dark font-brand font-regular text-white text-xs border border-white h-[300px] resize-none w-full p-2;
+  border-top: none;
+  border-left: none;
 }
+
+
+.line-numbers:focus, .textarea:focus {
+  @apply outline-none border-white ring-0;
+}
+
+
 
 .create_button {
 

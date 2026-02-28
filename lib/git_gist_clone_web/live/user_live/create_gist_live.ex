@@ -32,14 +32,15 @@ defmodule GitGistCloneWeb.UserLive.CreateGistLive do
 end
 
   def handle_event("create", %{"gist" => gist_params}, socket) do
-    scope = socket.assigns.current_scope
+    case Gists.create_gist(socket.assigns.current_scope, gist_params) do
+      {:ok, gist} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "Gist created successfully")
+        |> push_navigate(to: ~p"/gist/#{gist.id}")}
 
-    case Gists.create_gist(scope, gist_params) do
-      {:ok, _gist} ->
-        changeset = Gists.change_gist(scope, %Gist{user_id: scope.user.id})
-        {:noreply, assign(socket, :form, to_form(changeset))}
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :form, to_form(changeset))}
+        {:noreply, assign(socket, form: to_form(changeset))}
     end
   end
 end
